@@ -33,60 +33,57 @@ const components: { title: string; href: string; description: string }[] = [
 
 export default function Navbar() {
   return (
-    <NavigationMenu className="max-w-full justify-between p-4 bg-white border-b border-gray-200">
-      <NavigationMenuList className="flex w-full justify-between items-center">
-        <div className="flex items-center space-x-6">
-          <NavigationMenuItem>
-            <NavigationMenuLink asChild>
-              <Link href="/" className="flex items-center space-x-2 font-semibold text-lg text-gray-900">
-                Counter App
-              </Link>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
-          
-          <NavigationMenuItem>
-            <NavigationMenuTrigger className="text-gray-900">Features</NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr] bg-white">
-                <li className="row-span-3">
-                  <NavigationMenuLink asChild>
-                    <Link
-                      className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-slate-50 to-slate-100 p-6 no-underline outline-none focus:shadow-md"
-                      href="/"
-                    >
-                      <div className="mb-2 mt-4 text-lg font-medium text-gray-900">
-                        Counter App
-                      </div>
-                      <p className="text-sm leading-tight text-slate-600">
-                        A beautiful counter application built with Next.js and Tailwind CSS.
-                      </p>
-                    </Link>
-                  </NavigationMenuLink>
-                </li>
-                {components.map((component) => (
-                  <ListItem
-                    key={component.title}
-                    title={component.title}
-                    href={component.href}
-                  >
-                    {component.description}
-                  </ListItem>
-                ))}
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-              <Link href="/" className="text-gray-900">Home</Link>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
+    <NavigationMenu className="max-w-full p-4 bg-[#202c54] border-b border-gray-200">
+      <div className="flex w-full items-center">
+        <div className="flex items-center flex-1">
+          <ul className="flex gap-5 ml-6 list-none p-0 m-0 items-center">
+            <li className="list-none">
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                  <Link href="/" className="flex items-center font-semibold text-lg text-white">Home</Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            </li>
+            <li className="list-none">
+              <NavigationMenuItem>
+                <NavigationMenuTrigger className="text-white text-lg font-semibold">Features</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] bg-white">
+                    <li className="row-span-3">
+                      <NavigationMenuLink asChild>
+                        <Link
+                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-slate-50 to-slate-100 p-6 no-underline outline-none focus:shadow-md"
+                          href="/"
+                        >
+                          <div className="mb-2 mt-4 text-lg font-medium text-gray-900">
+                            Job search
+                          </div>
+                          <p className="text-sm leading-tight text-slate-600">
+                            The perfect place to hire and get hired.
+                          </p>
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
+                    {components.map((component) => (
+                      <ListItem
+                        key={component.title}
+                        title={component.title}
+                        href={component.href}
+                      >
+                        {component.description}
+                      </ListItem>
+                    ))}
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            </li>
+          </ul>
         </div>
-
-        <NavigationMenuItem className="flex ml-auto">
+        <div className="flex-1" />
+        <div className="flex items-center justify-end">
           <ConnectButton />
-        </NavigationMenuItem>
-      </NavigationMenuList>
+        </div>
+      </div>
     </NavigationMenu>
   );
 }
