@@ -59,7 +59,7 @@ module freelance::platform {
     // --- Initialize Cred for a new user ---
     public entry fun init_user(user: &signer, ctx: &mut TxContext) {
         move_to(user, Cred { id: object::new(ctx), score: 0 });
-    }
+    } // TODO : Algo pour cred
 
     // --- Post a Job ---
     public entry fun post_job(
@@ -93,7 +93,7 @@ module freelance::platform {
         let cred = borrow_global<Cred>(signer::address_of(freelancer));
 
         // Check cred
-        if (cred.score < job.required_cred) {
+        if (cred.score < job.required_cred) { // TODO : Formule par palier qui le fait mieux
             // requires caution deposit
             job.caution = coin::value(&caution_deposit);
             // TODO: hold deposit inside contract
