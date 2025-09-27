@@ -12,11 +12,10 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <head>
         <meta charSet="UTF-8" />
-  <link rel="icon" type="image/png" href="veilaccord_logo.png" />
+        <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>VeilAccord</title>
       </head>
-        <link rel="icon" type="image/png" href="veilaccord_logo.png" />
       <body>
         <Providers>
           <Navbar />
