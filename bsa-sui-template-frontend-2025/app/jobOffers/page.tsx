@@ -3,46 +3,9 @@
 "use client";
 import React, { useState } from "react";
 import './jobOffersScrollbar.css';
+import jobCategories from "../jobCategories.json";
 
-const jobClasses = [
-    "Engineering",
-    "Design",
-    "Marketing",
-    "Sales",
-    "Operations",
-    "Healthcare",
-    "Education",
-    "Finance",
-    "Legal",
-    "Human Resources",
-    "Customer Service",
-    "Logistics",
-    "Manufacturing",
-    "Construction",
-    "Hospitality",
-    "Science & Research",
-    "Arts & Entertainment",
-    "Government",
-    "Nonprofit",
-    "Agriculture",
-    "Information Technology",
-    "Real Estate",
-    "Retail",
-    "Energy",
-    "Transportation",
-    "Security",
-    "Media & Communication",
-    "Sports & Recreation",
-    "Other",
-];
-
-const jobOffers = [
-    { id: 1, title: "Frontend Engineer", class: "Engineering" },
-    { id: 2, title: "UI/UX Designer", class: "Design" },
-    { id: 3, title: "Marketing Specialist", class: "Marketing" },
-    { id: 4, title: "Sales Associate", class: "Sales" },
-    { id: 5, title: "Operations Manager", class: "Operations" },
-];
+const jobOffers: { id: number; title: string; class: string }[] = [];
 
 export default function JobOffersPage() {
     const [selectedClass, setSelectedClass] = useState("");
@@ -61,7 +24,7 @@ export default function JobOffersPage() {
                 >
                     All
                 </button>
-                {jobClasses.map((jobClass) => (
+                {jobCategories.map((jobClass: string) => (
                     <button
                         key={jobClass}
                         onClick={() => setSelectedClass(jobClass)}
