@@ -10,6 +10,17 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/page.js"
+    ],
+    "/jobOffers/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/jobOffers/page.css",
+      "static/chunks/app/jobOffers/page.js"
+    ],
+    "/applyEmployer/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/applyEmployer/page.js"
     ]
   }
 }
