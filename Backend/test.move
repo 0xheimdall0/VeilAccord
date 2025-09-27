@@ -30,14 +30,15 @@ module freelance::platform {
         jobs: vector<Job>,
     }
 
-    /// Initialize the registry (once, by the admin)
-    public entry fun init_registry(admin: &signer, ctx: &mut TxContext) {
-        let registry = JobRegistry {
-            id: object::new(ctx),
-            jobs: vector::empty<Job>(),
-        };
-        move_to(admin, registry);
-    }
+    /// Initialize the registry (once)
+   public entry fun init_registry(ctx: &mut TxContext) {
+    let registry = JobRegistry {
+        id: object::new(ctx),
+        jobs: vector::empty<Job>(),
+    };
+    // Partage la registry pour qu’elle devienne publique
+    transfer::share_object(registry);
+}
 
     /// Add a new job offer into the registry
     public entry fun add_job(
@@ -45,36 +46,10 @@ module freelance::platform {
 	    description: vector<u8>,
 	    payment: u64,
 	    required_cred: u64,
-	) acquires JobRegistry {
-	    let registry = borrow_global_mut<JobRegistry>(@0xADMIN); //TODO : METTRE L'ADRESSE ADMIN
-	    let job = Job {
-	        employer: signer::address_of(employer),
-	        description,
-	        payment,
-	        required_cred,
-	    };
-	    vector::push_back(&mut registry.jobs, job);
-	}
-
-    /// Get the full job list (for frontend queries)
-    public fun list_jobs(admin: address): &vector<Job> acquires JobRegistry {
-        &borrow_global<JobRegistry>(admin).jobs
-    }
-
-    // --- Initialize Cred for a new user ---
-    public entry fun init_user(user: &signer, ctx: &mut TxContext) {
-        move_to(user, Cred { id: object::new(ctx), score: 0 });
-    } // TODO : Algo pour cred
-
-    // --- Post a Job ---
-    public entry fun post_job(
-        employer: &signer,
-        description: vector<u8>,
-        payment: u64,
-        required_cred: u64,
         ctx: &mut TxContext
-    ) {
-        let job = Job {
+	) acquires JobRegistry {
+	    let registry = borrow_global_mut<JobRegistry>(@0x06430832ca656702c71c25f4b3e0edf6d94b3855d7fd636c013f90af87dddac3); //L'ADRESSE ADMIN
+	    let job = Job {
             id: object::new(ctx),
             employer: signer::address_of(employer),
             freelancer: option::none<address>(),
@@ -85,8 +60,19 @@ module freelance::platform {
             completed: false,
             contested: false,
         };
-        move_to(employer, job);
+	    vector::push_back(&mut registry.jobs, job);
+	}
+
+    /// Get the full job list (for frontend queries)
+    public fun list_jobs(registry_id: address): &vector<Job> acquires JobRegistry {
+        &borrow_global<JobRegistry>(registry_id).jobs
     }
+
+    // --- Initialize Cred for a new user ---
+    public entry fun init_user(user: &signer, ctx: &mut TxContext) {
+        move_to(user, Cred { id: object::new(ctx), score: 0 });
+    } // TODO : Algo pour cred
+
 
     // --- Accept a Job ---
     public entry fun accept_job(
@@ -125,7 +111,7 @@ module freelance::platform {
     public entry fun resolve(admin: &signer, job_id: address, outcome: bool) acquires Job, Cred {
         let job = borrow_global_mut<Job>(job_id);
         // Only special admin account allowed (hardcoded or configurable)
-        assert!(signer::address_of(admin) == @0xADMIN, 3); //TODO : configurer L'ADRESSE ADMIN
+        assert!(signer::address_of(admin) == @0x06430832ca656702c71c25f4b3e0edf6d94b3855d7fd636c013f90af87dddac3, 3); // L'ADRESSE ADMIN
 
         if (outcome) {
             // TODO reward freelancer + update cred according to the algo by both employer and freelancer
