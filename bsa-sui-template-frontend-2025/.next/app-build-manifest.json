@@ -11,6 +11,14 @@
       "static/chunks/main-app.js",
       "static/chunks/app/page.js"
     ],
+<<<<<<< HEAD
+=======
+    "/postJob/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/postJob/page.js"
+    ],
+>>>>>>> frontendJaiFaim
     "/jobOffers/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -21,6 +29,24 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/applyEmployer/page.js"
+<<<<<<< HEAD
+=======
+    ],
+    "/explainVA/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/explainVA/page.js"
+    ],
+    "/helpCenter/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/helpCenter/page.js"
+    ],
+    "/aboutUs/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/aboutUs/page.js"
+>>>>>>> frontendJaiFaim
     ]
   }
 }

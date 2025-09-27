@@ -1,4 +1,12 @@
 {
+<<<<<<< HEAD
   "/page": "app/page.js",
   "/jobOffers/page": "app/jobOffers/page.js"
+=======
+  "/explainVA/page": "app/explainVA/page.js",
+  "/page": "app/page.js",
+  "/postJob/page": "app/postJob/page.js",
+  "/jobOffers/page": "app/jobOffers/page.js",
+  "/aboutUs/page": "app/aboutUs/page.js"
+>>>>>>> frontendJaiFaim
 }

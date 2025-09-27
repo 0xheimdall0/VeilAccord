@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { ConnectButton } from "@mysten/dapp-kit";
+import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -32,6 +32,7 @@ const components: { title: string; href: string; description: string }[] = [
 ];
 
 export default function Navbar() {
+  const currentAccount = useCurrentAccount();
   return (
     <NavigationMenu className="max-w-full p-4 bg-[#202c54] border-b border-gray-200">
       <div className="flex w-full items-center">
@@ -48,33 +49,27 @@ export default function Navbar() {
             </li>
             <li className="list-none">
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="text-white text-lg font-semibold">Features</NavigationMenuTrigger>
+                <NavigationMenuTrigger className="text-white text-lg font-semibold">Get help</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] bg-white">
-                    <li className="row-span-3">
-                      <NavigationMenuLink asChild>
-                        <Link
-                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-slate-50 to-slate-100 p-6 no-underline outline-none focus:shadow-md"
-                          href="/"
-                        >
-                          <div className="mb-2 mt-4 text-lg font-medium text-gray-900">
-                            Job search
-                          </div>
-                          <p className="text-sm leading-tight text-slate-600">
-                            The perfect place to hire and get hired.
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                    {components.map((component) => (
-                      <ListItem
-                        key={component.title}
-                        title={component.title}
-                        href={component.href}
-                      >
-                        {component.description}
-                      </ListItem>
-                    ))}
+                  <ul className="grid gap-3 p-6 md:w-[350px] lg:w-[400px] bg-white">
+                    <ListItem
+                      title="How VeilAccord works"
+                      href="/explainVA"
+                    >
+                      Learn how to use the platform and get the most out of your experience.
+                    </ListItem>
+                    <ListItem
+                      title="FAQ / Help center"
+                      href="/helpCenter"
+                    >
+                      Find answers to common questions or get support.
+                    </ListItem>
+                    <ListItem
+                      title="About Us"
+                      href="/aboutUs"
+                    >
+                      Discover our mission, vision, and the team behind VeilAccord.
+                    </ListItem>
                   </ul>
                 </NavigationMenuContent>
               </NavigationMenuItem>
@@ -82,7 +77,14 @@ export default function Navbar() {
           </ul>
         </div>
         <div className="flex-1" />
-        <div className="flex items-center justify-end">
+        <div className="flex items-center justify-end gap-3">
+          {currentAccount && (
+            <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+              <Link href="/postJob" className="flex items-center font-semibold text-lg text-white">
+                Post Job Offer
+              </Link>
+            </NavigationMenuLink>
+          )}
           <ConnectButton />
         </div>
       </div>
@@ -95,7 +97,7 @@ const ListItem = React.forwardRef<
   React.ComponentPropsWithoutRef<"a">
 >(({ className, title, children, ...props }, ref) => {
   return (
-    <li>
+    <div>
       <NavigationMenuLink asChild>
         <a
           ref={ref}
@@ -108,7 +110,7 @@ const ListItem = React.forwardRef<
           </p>
         </a>
       </NavigationMenuLink>
-    </li>
+    </div>
   );
 });
 ListItem.displayName = "ListItem";
