@@ -40,7 +40,9 @@ export default function Navbar() {
             <li className="list-none">
               <NavigationMenuItem>
                 <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                  <Link href="/" className="flex items-center font-semibold text-lg text-white">Home</Link>
+                  <Link href="/" className="flex items-center font-semibold text-lg text-white">
+                    <img src="/homepage_button.png" alt="Home" className="w-6 h-6" />
+                  </Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
             </li>
