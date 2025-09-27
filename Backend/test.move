@@ -33,7 +33,7 @@ module freelance::platform {
     /// Initialize the registry (once)
    public entry fun init_registry(ctx: &mut TxContext) {
     let registry = JobRegistry {
-        id: object::new(ctx), // A STOCKER DANS UNE DB POUR POUVOIR PASSER LA REGISTERY EN ARG DANS ADD_JOB
+        id: object::new(ctx), // A STOCKER DANS UNE DB POUR POUVOIR PASSER LA REGISTERY EN ARG DANS LA FUN ADD_JOB
         jobs: vector::empty<Job>(),
     };
     // Partage la registry pour qu’elle devienne publique
