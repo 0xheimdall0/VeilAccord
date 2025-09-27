@@ -128,9 +128,9 @@ module freelance::platform {
         assert!(signer::address_of(admin) == @0xADMIN, 3); //TODO : configurer L'ADRESSE ADMIN
 
         if (outcome) {
-            // TODO reward freelancer + update cred
+            // TODO reward freelancer + update cred according to the algo by both employer and freelancer
         } else {
-            // TODO refund employer or keep caution
+            // TODO refund employer or keep caution and/or lessen the cred by freelancer and/or employer
         };
     }
 }
