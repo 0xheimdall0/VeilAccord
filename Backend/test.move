@@ -11,12 +11,17 @@ module freelance::platform {
     }
 
        /// A single job offer
-    struct Job has store {
-		id: u64,
+    struct Job has key, store {
+		id: UID,
         employer: address,
         description: vector<u8>,
-        payment: u64,
+        payment: Balance<SUI>,
+        fee: Balance<SUI>,
         required_cred: u64,
+        freelancer: option::Option<address>,
+        caution: option:Balance<SUI>,
+        completed: bool,
+        contested: bool,
     }
 
     /// The registry that stores all job offers
