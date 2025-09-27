@@ -1,2 +1,2 @@
-# sui-2025-hackathon
+# VeilAccord
 Entry for the BSA x SUI hackathon.
