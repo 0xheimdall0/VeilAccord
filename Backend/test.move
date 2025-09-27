@@ -11,12 +11,17 @@ module freelance::platform {
     }
 
        /// A single job offer
-    struct Job has store {
-		id: u64,
+    struct Job has key, store {
+		id: UID,
         employer: address,
         description: vector<u8>,
-        payment: u64,
+        payment: Balance<SUI>,
+        fee: Balance<SUI>,
         required_cred: u64,
+        freelancer: option::Option<address>,
+        caution: option:Balance<SUI>,
+        completed: bool,
+        contested: bool,
     }
 
     /// The registry that stores all job offers
@@ -123,9 +128,9 @@ module freelance::platform {
         assert!(signer::address_of(admin) == @0xADMIN, 3); //TODO : configurer L'ADRESSE ADMIN
 
         if (outcome) {
-            // TODO reward freelancer + update cred
+            // TODO reward freelancer + update cred according to the algo by both employer and freelancer
         } else {
-            // TODO refund employer or keep caution
+            // TODO refund employer or keep caution and/or lessen the cred by freelancer and/or employer
         };
     }
 }
