@@ -33,7 +33,7 @@ module freelance::platform {
     /// Initialize the registry (once)
    public entry fun init_registry(ctx: &mut TxContext) {
     let registry = JobRegistry {
-        id: object::new(ctx),
+        id: object::new(ctx), // A STOCKER DANS UNE DB POUR POUVOIR PASSER LA REGISTERY EN ARG DANS ADD_JOB
         jobs: vector::empty<Job>(),
     };
     // Partage la registry pour qu’elle devienne publique
@@ -42,26 +42,27 @@ module freelance::platform {
 
     /// Add a new job offer into the registry
     public entry fun add_job(
-	    employer: &signer,
-	    description: vector<u8>,
-	    payment: u64,
-	    required_cred: u64,
-        ctx: &mut TxContext
-	) acquires JobRegistry {
-	    let registry = borrow_global_mut<JobRegistry>(@0x06430832ca656702c71c25f4b3e0edf6d94b3855d7fd636c013f90af87dddac3); //L'ADRESSE ADMIN
-	    let job = Job {
-            id: object::new(ctx),
-            employer: signer::address_of(employer),
-            freelancer: option::none<address>(),
-            description,
-            payment,
-            required_cred,
-            caution: 0,
-            completed: false,
-            contested: false,
-        };
-	    vector::push_back(&mut registry.jobs, job);
-	}
+    employer: &signer,
+    registry: &mut JobRegistry,   // 🔥 On passe la registry partagée en argument
+    description: vector<u8>,
+    payment: u64,
+    required_cred: u64,
+    ctx: &mut TxContext
+) {
+    let job = Job {
+        id: object::new(ctx),
+        employer: signer::address_of(employer),
+        freelancer: option::none<address>(),
+        description,
+        payment,
+        required_cred,
+        caution: 0,
+        completed: false,
+        contested: false,
+    };
+
+    vector::push_back(&mut registry.jobs, job);
+}
 
     /// Get the full job list (for frontend queries)
     public fun list_jobs(registry_id: address): &vector<Job> acquires JobRegistry {
