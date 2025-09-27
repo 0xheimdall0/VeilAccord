@@ -1,3 +1,30 @@
+module freelance::cred {
+
+    /// Decide cred gain/loss for freelancers
+    public fun adjust_freelancer(completed: bool, payment: u64): i64 {
+        let importance = bracket(payment);
+        if (completed) { importance } else { -importance }
+    }
+
+    /// Decide cred gain/loss for employers
+    public fun adjust_employer(completed: bool, payment: u64): i64 {
+        let importance = bracket(payment);
+        // employers gain/lose less per job
+        if (completed) { importance / 2 } else { -(importance / 2) }
+    }
+
+    /// Map payment value to importance bracket
+    fun bracket(payment: u64): i64 {
+        if (payment <= 100) {
+            1
+        } else if (payment <= 1000) {
+            3
+        } else {
+            5
+        }
+    }
+}
+
 module freelance::platform {
 	use sui::object::{Self, UID};
 	use sui::tx_context::{Self, TxContext};
@@ -108,16 +135,26 @@ module freelance::platform {
 		job.contested = true;
 	}
 
-	// --- Support Intervention (Admin resolves) ---
-	public entry fun resolve(admin: &signer, job_id: address, outcome: bool) acquires Job, Cred {
-		let job = borrow_global_mut<Job>(job_id);
-		// Only special admin account allowed (hardcoded or configurable)
-		assert!(signer::address_of(admin) == @0x06430832ca656702c71c25f4b3e0edf6d94b3855d7fd636c013f90af87dddac3, 3); // L'ADRESSE ADMIN
+    /// Resolve job → update cred for employer + freelancer
+    public entry fun resolve_job(job_index: u64) acquires JobRegistry, Cred {
+        let registry = borrow_global_mut<JobRegistry>(@0xADMIN);
+        let job_ref = vector::borrow(&registry.jobs, job_index);
 
-		if (outcome) {
-			// TODO reward freelancer + update cred according to the algo by both employer and freelancer
-		} else {
-			// TODO refund employer or keep caution and/or lessen the cred by freelancer and/or employer
-		};
-	}
+        let employer_addr = job_ref.employer;
+        let freelancer_addr = option::extract(&mut option::clone(&job_ref.freelancer));
+
+        // update freelancer cred
+        let fcred = borrow_global_mut<Cred>(freelancer_addr);
+        let delta_f = cred::adjust_freelancer(job_ref.completed, job_ref.payment);
+        fcred.score = fcred.score + delta_f;
+
+        // update employer cred
+        let ecred = borrow_global_mut<Cred>(employer_addr);
+        let delta_e = cred::adjust_employer(job_ref.completed, job_ref.payment);
+        ecred.score = ecred.score + delta_e;
+    }
+	    /// Read job list (frontend can query)
+    public fun list_jobs(): &vector<Job> acquires JobRegistry {
+        &borrow_global<JobRegistry>(@0xADMIN).jobs
+    }
 }
