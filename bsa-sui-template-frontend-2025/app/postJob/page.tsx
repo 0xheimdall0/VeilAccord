@@ -91,7 +91,7 @@ export default function PostJobPage() {
                             />
                         </div>
                         <div>
-                            <label className="block text-blue-800 font-medium mb-1">Remuneration (per hour)</label>
+                            <label className="block text-blue-800 font-medium mb-1">Remuneration (per job)</label>
                             <input
                                 type="number"
                                 name="remuneration"
@@ -101,7 +101,7 @@ export default function PostJobPage() {
                                 min={0}
                                 step={0.01}
                                 className="w-full border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#202c54]"
-                                placeholder="What is the job's payout?"
+                                placeholder="Total payout for the whole job"
                             />
                         </div>
                         <div>
