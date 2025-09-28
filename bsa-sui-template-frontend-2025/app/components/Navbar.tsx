@@ -37,55 +37,70 @@ export default function Navbar() {
     <NavigationMenu className="max-w-full p-4 bg-[#202c54] border-b border-gray-200">
       <div className="flex w-full items-center">
         <div className="flex items-center flex-1">
-          <ul className="flex gap-5 ml-6 list-none p-0 m-0 items-center">
-            <li className="list-none">
-              <NavigationMenuItem>
-                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                  <Link href="/" className="flex items-center font-semibold text-lg text-white">
-                    <img src="/homepage_button.png" alt="Home" className="w-6 h-6" />
-                  </Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            </li>
-            <li className="list-none">
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className="text-white text-lg font-semibold">Get help</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid gap-3 p-6 md:w-[350px] lg:w-[400px] bg-white">
-                    <ListItem
-                      title="How VeilAccord works"
-                      href="/explainVA"
-                    >
-                      Learn how to use the platform and get the most out of your experience.
-                    </ListItem>
-                    <ListItem
-                      title="FAQ / Help center"
-                      href="/helpCenter"
-                    >
-                      Find answers to common questions or get support.
-                    </ListItem>
-                    <ListItem
-                      title="About Us"
-                      href="/aboutUs"
-                    >
-                      Discover our mission, vision, and the team behind VeilAccord.
-                    </ListItem>
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-            </li>
-          </ul>
+          {/* Show nav buttons if connected, else show Get Help button */}
+          {currentAccount ? (
+            <ul className="flex gap-5 ml-6 list-none p-0 m-0 items-center">
+              <li className="list-none">
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                    <Link href="/homePage" className="flex items-center font-semibold text-lg text-white">
+                      <img src="/homepage_button.png" alt="Home" className="w-6 h-6" />
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              </li>
+              <li className="list-none">
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="text-white text-lg font-semibold">Get help</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid gap-3 p-6 md:w-[350px] lg:w-[400px] bg-white">
+                      <ListItem
+                        title="How VeilAccord works"
+                        href="/explainVA"
+                      >
+                        Learn how to use the platform and get the most out of your experience.
+                      </ListItem>
+                      <ListItem
+                        title="FAQ / Help center"
+                        href="/helpCenter"
+                      >
+                        Find answers to common questions or get support.
+                      </ListItem>
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </li>
+            </ul>
+          ) : (
+            <div className="ml-6 flex gap-3">
+              <Link
+                href="/"
+                className={navigationMenuTriggerStyle() + " text-white flex items-center justify-center p-0 w-10 h-10"}
+                aria-label="Home"
+              >
+                <img src="/homepage_button.png" alt="Home" className="w-6 h-6" />
+              </Link>
+              <Link
+                href="/helpCenter"
+                className={navigationMenuTriggerStyle() + " text-white"}
+              >
+                Get Help
+              </Link>
+            </div>
+          )}
         </div>
         <div className="flex-1" />
         <div className="flex items-center justify-end gap-3">
           {currentAccount && (
-            <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-              <Link href="/postJob" className="flex items-center font-semibold text-lg text-white">
-                Post Job Offer
-              </Link>
-            </NavigationMenuLink>
+            <>
+              <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                <Link href="/postJob" className="flex items-center font-semibold text-lg text-white">
+                  Post Job Offer
+                </Link>
+              </NavigationMenuLink>
+              <ConnectButton />
+            </>
           )}
-          <ConnectButton />
         </div>
       </div>
     </NavigationMenu>

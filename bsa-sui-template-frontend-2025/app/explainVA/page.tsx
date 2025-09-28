@@ -1,6 +1,8 @@
 
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useCurrentAccount } from "@mysten/dapp-kit";
+import { useRouter } from "next/navigation";
 
 const sections = [
     { id: "intro", label: "Introduction" },
@@ -15,8 +17,28 @@ const explanations = {
 };
 
 type SectionKey = 'intro' | 'how-it-works' | 'advantages';
+
 export default function ExplainVAPage() {
     const [selectedSection, setSelectedSection] = useState<SectionKey>(sections[0].id as SectionKey);
+    const account = useCurrentAccount();
+    const router = useRouter();
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+    const redirectTimeout = useRef<NodeJS.Timeout | null>(null);
+    useEffect(() => {
+        if (mounted && !account) {
+            redirectTimeout.current = setTimeout(() => {
+                if (!account) router.replace("/");
+            }, 300);
+        }
+        return () => {
+            if (redirectTimeout.current) clearTimeout(redirectTimeout.current);
+        };
+    }, [account, router, mounted]);
+    if (!mounted) return null;
+    if (!account) return null;
 
     return (
         <div className="flex min-h-screen bg-gray-50">

@@ -1,8 +1,9 @@
 
-'use client';
-import React, { useState } from 'react';
+"use client";
+import React, { useState, useEffect } from 'react';
 import jobCategories from "../jobCategories.json";
-
+import { useCurrentAccount } from "@mysten/dapp-kit";
+import { useRouter } from "next/navigation";
 
 export default function PostJobPage() {
     const initialForm = {
@@ -19,6 +20,14 @@ export default function PostJobPage() {
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
     const [customMessage, setCustomMessage] = useState<string | null>(null);
+    const account = useCurrentAccount();
+    const router = useRouter();
+    useEffect(() => {
+        if (!account) {
+            router.replace("/");
+        }
+    }, [account, router]);
+    if (!account) return null;
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
