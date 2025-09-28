@@ -1,40 +1,42 @@
+"use client";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
+import Image from "next/image";
 
-import Link from "next/link";
+// Assuming homePage uses a similar container and card style
+export default function LandingPage() {
+  const router = useRouter();
+  const account = useCurrentAccount();
 
-export default function Home() {
+  useEffect(() => {
+    if (account) {
+      router.replace("/homePage");
+    }
+  }, [account, router]);
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center" style={{background: 'linear-gradient(135deg, #eaf6fd 0%, #f8fbff 60%, #70b5fa 100%)'}}>
-      <section className="w-full max-w-2xl mx-auto flex flex-col items-center justify-center py-20 px-4">
-        <img
-          src="veilaccord_logo.png"
-          alt="VeilAccord Logo"
-          className="w-32 h-32 mb-8 rounded-2xl shadow-lg border-4 border-[#70b5fa] bg-white"
-          style={{ background: '#fff' }}
-        />
-        <h1 className="text-5xl font-extrabold mb-4 tracking-tight text-[#202c54] text-center drop-shadow-sm">
-          VeilAccord
-        </h1>
-        <p className="text-xl font-medium text-[#70b5fa] mb-2 text-center">
-          Unveil Potential, Veil Identities.
+    <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-gray-100">
+      <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center">
+        <header className="flex flex-col items-center mb-8">
+          <Image
+            src="/veilaccord_logo.png"
+            alt="VeilAccord Logo"
+            width={80}
+            height={80}
+            className="mb-4"
+          />
+          <h1 className="text-3xl font-extrabold text-blue-700 mb-1">VeilAccord</h1>
+          <p className="text-base text-gray-500 font-medium">
+            Empowering Privacy, Enabling Trust
+          </p>
+        </header>
+        <ConnectButton className="w-full py-3 bg-blue-600 text-white rounded-lg font-semibold text-lg shadow hover:bg-blue-700 transition mb-4" />
+        <p className="text-gray-400 text-center text-sm">
+          Connect your wallet to access the service.
         </p>
-        <p className="text-base text-[#202c54] mb-8 text-center max-w-xl">
-          Modern platform for your job search and offers. Secure, fast, simple.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 w-full justify-center mt-4">
-          <Link
-            href="/jobOffers"
-            className="bg-[#70b5fa] hover:bg-[#4fa3f7] text-white font-semibold px-8 py-3 rounded-lg shadow transition-colors text-lg text-center"
-          >
-            Browse job offers
-          </Link>
-          <Link
-            href="/applyEmployer"
-            className="bg-[#202c54] text-white font-semibold px-8 py-3 rounded-lg shadow hover:bg-[#31406e] transition-colors text-lg text-center"
-          >
-            Apply as employer
-          </Link>
-        </div>
-      </section>
-    </div>
+
+      </div>
+    </main>
   );
 }

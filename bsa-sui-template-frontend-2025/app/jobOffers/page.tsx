@@ -1,15 +1,28 @@
-
-
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import './jobOffersScrollbar.css';
 import jobCategories from "../jobCategories.json";
+import { useCurrentAccount } from "@mysten/dapp-kit";
+import { useRouter } from "next/navigation";
 
 const jobOffers: { id: number; title: string; class: string }[] = [];
 
 export default function JobOffersPage() {
     const [selectedClass, setSelectedClass] = useState("");
     const filteredOffers = jobOffers.filter((offer) => offer.class === selectedClass);
+    const account = useCurrentAccount();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!account) {
+            router.replace("/"); // Redirect to landing if not connected
+        }
+    }, [account, router]);
+
+    if (!account) {
+        // Prevents rendering any content before redirect
+        return null;
+    }
 
     return (
         <div className="min-h-screen flex items-start" style={{background: 'linear-gradient(135deg, #eaf6fd 0%, #f8fbff 60%, #70b5fa 100%)'}}>

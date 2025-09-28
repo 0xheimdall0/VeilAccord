@@ -1,6 +1,8 @@
 
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useCurrentAccount } from "@mysten/dapp-kit";
+import { useRouter } from "next/navigation";
 
 export default function ApplyEmployerPage() {
     const [form, setForm] = useState({
@@ -12,6 +14,14 @@ export default function ApplyEmployerPage() {
         description: "",
     });
     const [submitted, setSubmitted] = useState(false);
+    const account = useCurrentAccount();
+    const router = useRouter();
+    useEffect(() => {
+        if (!account) {
+            router.replace("/");
+        }
+    }, [account, router]);
+    if (!account) return null;
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -62,7 +72,6 @@ export default function ApplyEmployerPage() {
                                 value={form.email}
                                 onChange={handleChange}
                                 className="w-full border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#202c54]"
-                                placeholder="company.email@company.com"
                             />
                         </div>
                         <div>
@@ -76,7 +85,6 @@ export default function ApplyEmployerPage() {
                                 value={form.website}
                                 onChange={handleChange}
                                 className="w-full border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#202c54]"
-                                placeholder="https://yourcompany.com"
                             />
                         </div>
                         <div>
@@ -87,11 +95,9 @@ export default function ApplyEmployerPage() {
                                 id="contactPerson"
                                 name="contactPerson"
                                 type="text"
-                                required
                                 value={form.contactPerson}
                                 onChange={handleChange}
                                 className="w-full border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#202c54]"
-                                placeholder="e.g. John Smith"
                             />
                         </div>
                         <div>
@@ -105,7 +111,6 @@ export default function ApplyEmployerPage() {
                                 value={form.phone}
                                 onChange={handleChange}
                                 className="w-full border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#202c54]"
-                                placeholder="+1 234 567 890"
                             />
                         </div>
                         <div>
@@ -115,19 +120,17 @@ export default function ApplyEmployerPage() {
                             <textarea
                                 id="description"
                                 name="description"
-                                className="w-full border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#202c54]"
                                 rows={4}
-                                required
                                 value={form.description}
                                 onChange={handleChange}
-                                placeholder="Tell us about your company..."
+                                className="w-full border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 text-[#202c54]"
                             />
                         </div>
                         <button
                             type="submit"
                             className="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 rounded transition"
                         >
-                            Submit Application
+                            Apply
                         </button>
                     </form>
                 )}
